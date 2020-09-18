@@ -11,21 +11,22 @@ oc new-project broker
 Now let's s2i our conf to the jboss-amq image
 
 ```
-$ oc new-build registry.redhat.io/amq-broker-7/amq-broker-73-openshift:7.3~https://github.com/abouchama/amq7-s2i.git
---> Found Docker image 213daa8 (2 weeks old) from registry.redhat.io for "registry.redhat.io/amq-broker-7/amq-broker-73-openshift:7.3"
+$ oc new-build registry.redhat.io/amq7/amq-broker:7.6~https://github.com/avi5kdonrh/amq7-s2i.git
+--> Found Docker image f554b48 (5 months old) from registry.redhat.io for "registry.redhat.io/amq7/amq-broker:7.6"
 
-    Red Hat AMQ Broker 7.3.0 
+    Red Hat AMQ Broker 7.6.0 
     ------------------------ 
     A reliable messaging platform that supports standard messaging paradigms for a real-time enterprise.
 
     Tags: messaging, amq, java, jboss, xpaas
 
-    * An image stream tag will be created as "amq-broker-73-openshift:7.3" that will track the source image
-    * A source build using source code from https://github.com/abouchama/amq7-s2i.git will be created
+    * An image stream tag will be created as "amq-broker:7.6" that will track the source image
+    * A source build using source code from https://github.com/avi5kdonrh/amq7-s2i.git will be created
       * The resulting image will be pushed to image stream tag "amq7-s2i:latest"
-      * Every time "amq-broker-73-openshift:7.3" changes a new build will be triggered
+      * Every time "amq-broker:7.6" changes a new build will be triggered
 
 --> Creating resources with label build=amq7-s2i ...
+    imagestream.image.openshift.io "amq-broker" created
     imagestream.image.openshift.io "amq7-s2i" created
     buildconfig.build.openshift.io "amq7-s2i" created
 --> Success
@@ -35,19 +36,23 @@ To stream the build progress, run 'oc logs -f bc/amq7-s2i', You can see here tha
 
 ```
 $ oc logs -f bc/amq7-s2i
-Cloning "https://github.com/abouchama/amq7-s2i.git" ...
-	Commit:	e96946f128fcf1e9072c99bf631b7104f758c01d (Update broker.xml)
-	Author:	Abdellatif BOUCHAMA <abdellatif.bouchama@gmail.com>
-	Date:	Thu May 16 16:49:07 2019 +0200
-Using registry.redhat.io/amq-broker-7/amq-broker-73-openshift@sha256:5003e612962f130ff2e3e12fae6b0a2d808c2ef65ec97300ed3060db72481067 as the s2i builder image
-INFO Copying configuration from configuration to /opt/amq/conf...
-broker.xml
-Pushing image 172.30.1.1:5000/broker/amq7-s2i:latest ...
-Pushed 2/5 layers, 40% complete
-Pushed 3/5 layers, 73% complete
-Pushed 4/5 layers, 99% complete
-Pushed 5/5 layers, 100% complete
+Cloning "https://github.com/avi5kdonrh/amq7-s2i.git" ...
+	Commit:	e800e4392d4d224fbe8a1e6c67dbae5a417e901d (new changes)
+	Author:	avi5kdon <avi5kdon@gmail.com>
+	Date:	Fri Sep 18 20:32:00 2020 +0530
+Caching blobs under "/var/cache/blobs".
+Getting image source signatures
+Copying blob sha256:455ea8ab06218495bbbcb14b750a0d644897b24f8c5dcf9e8698e27882583412
+..........
+Getting image source signatures
+Copying blob sha256:f985fa3adb1cc0d6179ecbaa77f28edc528319932bddf0da495ec66849650b56
+............
+Copying config sha256:1d031df63b7abe51b001fa7816d261f238a0a818ecb0bac34769a002611caa25
+Writing manifest to image destination
+Storing signatures
+Successfully pushed image-registry.openshift-image-registry.svc:5000/amq7/amq7-s2i@sha256:c1af498169a2e76f0f72deb17b3041387f090d51e6beaf2445e5dceef09350fd
 Push successful
+
 ```
 
 Create the service account "amq-service-account"
@@ -63,16 +68,16 @@ oc policy add-role-to-user view system:serviceaccount:broker:amq-service-account
 
 Install templates in the namespace broker:
 ```
-for template in amq-broker-73-basic.yaml \
-amq-broker-73-ssl.yaml \
-amq-broker-73-custom.yaml \
-amq-broker-73-persistence.yaml \
-amq-broker-73-persistence-ssl.yaml \
-amq-broker-73-persistence-clustered.yaml \
-amq-broker-73-persistence-clustered-ssl.yaml;
+for template in amq-broker-76-basic.yaml \
+amq-broker-76-ssl.yaml \
+amq-broker-76-custom.yaml \
+amq-broker-76-persistence.yaml \
+amq-broker-76-persistence-ssl.yaml \
+amq-broker-76-persistence-clustered.yaml \
+amq-broker-76-persistence-clustered-ssl.yaml;
  do
  oc replace --force -f \
-https://raw.githubusercontent.com/jboss-container-images/jboss-amq-7-broker-openshift-image/73-7.3.0.GA/templates/${template}
+https://raw.githubusercontent.com/jboss-container-images/jboss-amq-7-broker-openshift-image/amq-broker-76-dev/templates/${template}
  done
 ```
 
@@ -80,16 +85,17 @@ Let's get now, our image stream URL:
 
 ```
 $ oc get is
-NAME                      DOCKER REPO                                      TAGS         UPDATED
-amq-broker-73-openshift   172.30.1.1:5000/broker/amq-broker-73-openshift   7.3,latest   33 minutes ago
-amq7-s2i                  172.30.1.1:5000/broker/amq7-s2i                  latest       About a minute ago
+NAME         IMAGE REPOSITORY                                                   TAGS      UPDATED
+amq-broker   image-registry.openshift-image-registry.svc:5000/amq7/amq-broker   7.6       12 minutes ago
+amq7-s2i     image-registry.openshift-image-registry.svc:5000/amq7/amq7-s2i     latest    9 minutes ago
+
 ```
 
 Specify the image (172.30.1.1:5000/broker/amq7-s2i) in one of the templates installed above in the parameter 'IMAGE':
 For instance:
 
 ```
-oc process amq-broker-73-basic -p APPLICATION_NAME=broker-s2i -p AMQ_NAME=broker-s2i -p AMQ_USER=user -p AMQ_PASSWORD=password -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt,hornetq -p IMAGE_STREAM_NAMESPACE=broker -p IMAGE=172.30.1.1:5000/broker/amq7-s2i -n broker | oc create -f -
+oc process amq-broker-76-basic -p APPLICATION_NAME=broker-s2i -p AMQ_NAME=broker-s2i -p AMQ_USER=user -p AMQ_PASSWORD=password -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt,hornetq -p IMAGE_STREAM_NAMESPACE=broker -p IMAGE=172.30.1.1:5000/broker/amq7-s2i -n broker | oc create -f -
 ```
 
 Update of broker.xml
