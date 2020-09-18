@@ -1,9 +1,0 @@
-#!/bin/sh
-
-SRCCONFIG=/tmp/src/configuration
-
-chmod +x ${SRCCONFIG}/*
-echo "Copying custom config files"
-cp -v ${SRCCONFIG}/* /opt/amq/conf/
-echo "Done"
-exit 0
