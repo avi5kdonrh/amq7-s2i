@@ -1,0 +1,12 @@
+#!/bin/sh
+
+SRCPATCH=/tmp/src/patch
+
+chmod +x ${SRCPATCH}/*
+chmod +x ${SRCPATCH}/lib/*
+
+cp -v ${SRCPATCH}/lib/* $AMQ_HOME/lib/
+
+echo "## Pathing with ojdbc##"
+
+exit 0
