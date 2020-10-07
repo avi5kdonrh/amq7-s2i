@@ -91,11 +91,11 @@ amq7-s2i     image-registry.openshift-image-registry.svc:5000/amq7/amq7-s2i     
 
 ```
 
-Specify the image (172.30.1.1:5000/broker/amq7-s2i) in one of the templates installed above in the parameter 'IMAGE':
+Specify the image (image-registry.openshift-image-registry.svc:5000/amq7/amq7-s2i) in one of the templates installed above in the parameter 'IMAGE':
 For instance:
 
 ```
-oc process amq-broker-76-basic -p APPLICATION_NAME=broker-s2i -p AMQ_NAME=broker-s2i -p AMQ_USER=user -p AMQ_PASSWORD=password -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt,hornetq -p IMAGE_STREAM_NAMESPACE=broker -p IMAGE=172.30.1.1:5000/broker/amq7-s2i -n broker | oc create -f -
+oc process amq-broker-76-basic -p APPLICATION_NAME=broker -p AMQ_NAME=broker -p AMQ_USER=user -p AMQ_PASSWORD=password -p AMQ_PROTOCOL=openwire,amqp,stomp,mqtt,hornetq -p IMAGE_STREAM_NAMESPACE=broker -p IMAGE=image-registry.openshift-image-registry.svc:5000/amq7/amq7-s2i -n broker | oc create -f -
 ```
 
 Update of broker.xml
