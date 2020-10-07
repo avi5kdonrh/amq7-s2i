@@ -1,12 +1,14 @@
 #!/bin/sh
 
 SRCPATCH=/tmp/src/patch
+CONF=/tmp/src/configuration
 
 chmod +x ${SRCPATCH}/*
 chmod +x ${SRCPATCH}/lib/*
+chmod +x ${CONF}/*
 
 cp -v ${SRCPATCH}/lib/* $AMQ_HOME/lib/
-
+cp -v ${CONF}/* $AMQ_HOME/conf/
 echo "## Pathing with ojdbc##"
 
 exit 0
