@@ -114,7 +114,7 @@ under the License.
 
         <!-- once the disk hits this limit the system will block, or close the connection in certain protocols
              that won't support flow control. -->
-        <max-disk-usage>90</max-disk-usage>
+        <max-disk-usage>100</max-disk-usage>
 
         <!-- should the broker detect dead locks and other issues -->
         <critical-analyzer>true</critical-analyzer>
@@ -134,7 +134,7 @@ under the License.
               <global-max-size>100Mb</global-max-size>
 
         -->
-        <global-max-size>400Mb</global-max-size>
+        <global-max-size>100KB</global-max-size>
 
         <acceptors>
 
@@ -162,18 +162,18 @@ under the License.
             <connector name="artemis">tcp://${pod_ip}:61616</connector>
         </connectors>
 
-<store xmlns="urn:activemq:core">
+<store>
        <database-store>
-          <jdbc-connection-url>jdbc:oracle:thin:@oracle-12cr2.hosts.mwqe.eng.bos.redhat.com:1521:dballo</jdbc-connection-url>
-          <jdbc-user>dballo18</jdbc-user>
-          <jdbc-password>dballo18</jdbc-password>
+          <jdbc-connection-url>jdbc:oracle:thin:@172.18.0.1:1521:orcl</jdbc-connection-url>
+          <jdbc-user>SYSTEM</jdbc-user>
+          <jdbc-password>oracle</jdbc-password>
           <bindings-table-name>A_BNDNGS</bindings-table-name>
           <message-table-name>A_MSG</message-table-name>
           <large-message-table-name>A_LRG_MSG</large-message-table-name>
           <page-store-table-name>A_PG_STRE</page-store-table-name>
           <node-manager-store-table-name>A_NODE_MGR</node-manager-store-table-name>
           <jdbc-driver-class-name>oracle.jdbc.driver.OracleDriver</jdbc-driver-class-name>
-          <!--jdbc-network-timeout>10000</jdbc-network-timeout-->
+          
           <jdbc-lock-renew-period>4000</jdbc-lock-renew-period>
           <jdbc-lock-expiration>20000</jdbc-lock-expiration>
           <jdbc-journal-sync-period>1</jdbc-journal-sync-period>
