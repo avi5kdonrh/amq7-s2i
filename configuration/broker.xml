@@ -164,7 +164,7 @@ under the License.
 
 <store>
        <database-store>
-          <jdbc-connection-url>jdbc:oracle:thin:@172.18.0.1:1521:orcl</jdbc-connection-url>
+          <jdbc-connection-url>jdbc:oracle:thin:@169.254.154.214:1521:orcl</jdbc-connection-url>
           <jdbc-user>SYSTEM</jdbc-user>
           <jdbc-password>oracle</jdbc-password>
           <bindings-table-name>A_BNDNGS</bindings-table-name>
