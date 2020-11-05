@@ -374,8 +374,8 @@ function runServer() {
   
    if [ -n "${ARTEMIS_USERS}" -a -n "${ARTEMIS_ROLES}" ] ; then
    echo "Writing the configured artemis-users.properties and artemis-roles.properties."
-   echo "${ARTEMIS_USERS}" > ${instanceDir}/etc/artemis-users.properties
-   echo "${ARTEMIS_ROLES}" > ${instanceDir}/etc/artemis-roles.properties
+   echo -e "${ARTEMIS_USERS}" > ${instanceDir}/etc/artemis-users.properties
+   echo -e "${ARTEMIS_ROLES}" > ${instanceDir}/etc/artemis-roles.properties
  fi
 
   if [ "$1" != "nostart" ]; then
