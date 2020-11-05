@@ -266,11 +266,7 @@ function injectMetricsPlugin() {
 function configure() {
   instanceDir=$1
   
- if [ -n "${ARTEMIS_USERS}" -a -n "${ARTEMIS_ROLES}" ] ; then
-   echo "Writing the configured artemis-users.properties and artemis-roles.properties."
-   echo "${ARTEMIS_USERS}" > ${instanceDir}/etc/artemis-users.properties
-   echo "${ARTEMIS_ROLES}" > ${instanceDir}/etc/artemis-roles.properties
- fi
+
    
 
   export CONTAINER_ID=$HOSTNAME
@@ -375,6 +371,12 @@ function runServer() {
   instanceDir="${HOME}/${AMQ_NAME}"
 
   configure $instanceDir
+  
+   if [ -n "${ARTEMIS_USERS}" -a -n "${ARTEMIS_ROLES}" ] ; then
+   echo "Writing the configured artemis-users.properties and artemis-roles.properties."
+   echo "${ARTEMIS_USERS}" > ${instanceDir}/etc/artemis-users.properties
+   echo "${ARTEMIS_ROLES}" > ${instanceDir}/etc/artemis-roles.properties
+ fi
 
   if [ "$1" != "nostart" ]; then
     echo "Running Broker"
