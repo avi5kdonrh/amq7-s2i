@@ -9,6 +9,7 @@ chmod +x ${CONF}/*
 
 cp -v ${SRCPATCH}/lib/* $AMQ_HOME/lib/
 cp -v ${CONF}/* $AMQ_HOME/conf/
+cp -v /tmp/src/script/* $AMQ_HOME/bin
 echo "## Pathing with ojdbc##"
 
 exit 0
