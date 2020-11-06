@@ -372,7 +372,7 @@ function runServer() {
 
   configure $instanceDir
   
-  if [ -n "${ARTEMIS_AUTH}"] ; then
+  if [ -n "${ARTEMIS_AUTH}" ] ; then
    userDetails="${ARTEMIS_AUTH}"
    IFS="," read -a individualUser <<< $userDetails
    for (( i=0; i<${#individualUser[@]}; i++ )); do
