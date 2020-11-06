@@ -377,7 +377,7 @@ function runServer() {
    IFS="," read -a individualUser <<< $userDetails
    for (( i=0; i<${#individualUser[@]}; i++ )); do
      IFS=":" read -a userSplit <<< "${individualUser[$i]}"
-      exec ${instanceDir}/bin/artemis user add --user "${userSplit[0]}" --password "${userSplit[1]}" --role "${userSplit[2]}"
+      .${instanceDir}/bin/artemis user add --user "${userSplit[0]}" --password "${userSplit[1]}" --role "${userSplit[2]}"
    done
  fi
 
