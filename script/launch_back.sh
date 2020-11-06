@@ -372,13 +372,10 @@ function runServer() {
 
   configure $instanceDir
   
-  if [ -n "${ARTEMIS_AUTH}"] ; then
-   userDetails="${ARTEMIS_AUTH}"
-   IFS="," read -a individualUser <<< $userDetails
-   for (( i=0; i<${#individualUser[@]}; i++ )); do
-     IFS=":" read -a userSplit <<< "${individualUser[$i]}"
-      exec ${instanceDir}/bin/artemis user add --user "${userSplit[0]}" --password "${userSplit[1]}" --role "${userSplit[2]}"
-   done
+   if [ -n "${ARTEMIS_USERS}" -a -n "${ARTEMIS_ROLES}" ] ; then
+   echo "Writing the configured artemis-users.properties and artemis-roles.properties."
+   echo -e "${ARTEMIS_USERS}" > ${instanceDir}/etc/artemis-users.properties
+   echo -e "${ARTEMIS_ROLES}" > ${instanceDir}/etc/artemis-roles.properties
  fi
 
   if [ "$1" != "nostart" ]; then
